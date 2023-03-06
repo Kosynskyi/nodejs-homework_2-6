@@ -26,4 +26,11 @@ router.get("/current", authenticate, controllerWrapper(controllers.getCurrent));
 
 router.get("/logout", authenticate, controllerWrapper(controllers.logOut));
 
+router.patch(
+  "/users/:id/subscription",
+  authenticate,
+  validateBody(schemas.subscriptionSchema),
+  controllerWrapper(controllers.subscription)
+);
+
 module.exports = router;

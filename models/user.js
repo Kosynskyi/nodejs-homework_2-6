@@ -5,6 +5,8 @@ const { handleSaveErrors } = require("../helpers");
 
 const emailRegexp = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
 
+const subscriptionVariants = ["starter", "pro", "business"];
+
 const userSchema = new Schema(
   {
     name: {
@@ -24,7 +26,7 @@ const userSchema = new Schema(
     },
     subscription: {
       type: String,
-      enum: ["starter", "pro", "business"],
+      enum: subscriptionVariants,
       default: "starter",
     },
     token: {
@@ -41,20 +43,28 @@ userSchema.post("save", handleSaveErrors);
 const registerSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().pattern(emailRegexp).required(),
-  password: Joi.string().min(6).required(),
+  password: Joi.string().min(4).required(),
 });
 
 const loginSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string()
-    .min(6)
-    .messages({ "string.min": "Password cann't less then 6 symbols" })
+    .min(4)
+    .messages({ "string.min": "Password cann't less then 4 symbols" })
+    .required(),
+});
+
+const subscriptionSchema = Joi.object({
+  subscription: Joi.string()
+    .valid(...subscriptionVariants)
+    .messages({ "string.valid": "incorrect subscription type" })
     .required(),
 });
 
 const schemas = {
   registerSchema,
   loginSchema,
+  subscriptionSchema,
 };
 
 const User = model("user", userSchema);
