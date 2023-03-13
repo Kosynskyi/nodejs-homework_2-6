@@ -4,7 +4,11 @@ const controllers = require("../../controllers/contacts");
 
 const { controllerWrapper } = require("../../helpers");
 
-const { validateBody, isValidId, authenticate } = require("../../middlewares");
+const {
+  validateBody,
+  isValidId,
+  authenticate,
+} = require("../../middlewares");
 
 const { schemas } = require("../../models/contact");
 
