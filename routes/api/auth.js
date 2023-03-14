@@ -4,7 +4,7 @@ const controllers = require("../../controllers/auth");
 
 const { controllerWrapper } = require("../../helpers");
 
-const { validateBody, authenticate } = require("../../middlewares");
+const { validateBody, authenticate, upload } = require("../../middlewares");
 
 const { schemas } = require("../../models/user");
 
@@ -31,6 +31,13 @@ router.patch(
   authenticate,
   validateBody(schemas.subscriptionSchema),
   controllerWrapper(controllers.subscription)
+);
+
+router.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatar"),
+  controllerWrapper(controllers.updateAvatar)
 );
 
 module.exports = router;
